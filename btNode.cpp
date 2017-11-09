@@ -30,9 +30,56 @@ int bst_size(btNode* bst_root)
    return 1 + bst_size(bst_root->left) + bst_size(bst_root->right);
 }
 
-// write definition for bst_insert here
+void bst_insert(btNode*& bst_root, int insInt){
 
-// write definition for bst_remove here
+   /// Create new node to insert.
+   btNode* newBtNode = new btNode;
+   newBtNode->data = insInt;
+   newBtNode->left,newBtNode->right = 0;
 
-// write definition for bst_remove_max here
+   /// Check for empty tree.
+   if(bst_root == 0){
+      bst_root = newBtNode;
+      return;
+   }
+
+   btNode* cursor = bst_root;
+   btNode* lastBtNode = 0;
+
+   /// Check whether to insert LST or RST.
+   while(cursor != 0) {
+
+      // Current node is the last node presently.
+      lastBtNode = cursor;
+
+      // insInt matches value already in the tree. Overwrite value.
+      if(cursor->data == insInt){
+         cursor->data = insInt;
+         return;
+      }
+
+      if (cursor->data > insInt) {
+         // insInt is less than root node insert LST.
+         cursor = cursor->left;
+      } else {
+         // insInt is greater than root node insert RST.
+         cursor = cursor->right;
+      }
+   }
+
+   /// Last node in LST or RST found. Choose insertion path.
+
+   if(lastBtNode->data > insInt){
+      // insInt is less than root node insert LST.
+      lastBtNode->left = newBtNode;
+      return;
+   } else {
+      // insInt is greater than root node insert RST.
+      lastBtNode->right = newBtNode;
+      return;
+   }
+}
+bool bst_remove(btNode*& bst_root, int remInt);
+void bst_remove_max(btNode*& bst_root, int& data);
+
 

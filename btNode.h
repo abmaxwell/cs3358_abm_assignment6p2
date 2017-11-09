@@ -36,7 +36,7 @@ int bst_size(btNode* bst_root);
 //       location in the tree to maintain binary search tree property.
 //       If a node with data equals insInt is found, the node's data field
 //       has been overwritten with insInt; no new node has been created.
-// write prototype for bst_insert here
+void bst_insert(btNode*& bst_root, int insInt);
 
 // pre:  bst_root is root pointer of a binary search tree (may be 0 for
 //       empty tree)
@@ -44,13 +44,13 @@ int bst_size(btNode* bst_root);
 //       now points to the root of the new (smaller) binary search tree,
 //       and the function returns true. Otherwise, if remInt was not in the
 //       tree, then the tree is unchanged, and the function returns false.
-// write prototype for bst_remove here
+bool bst_remove(btNode*& bst_root, int remInt);
 
 // pre:  bst_root is root pointer of a non-empty binary search tree
 // post: The largest item in the binary search tree has been removed, and
 //       bst_root now points to the root of the new (smaller) binary search
 //       tree. The reference parameter, removed, has been set to a copy of
 //       the removed item.
-// write prototype for bst_remove_max here
+void bst_remove_max(btNode*& bst_root, int& data);
 
 #endif
