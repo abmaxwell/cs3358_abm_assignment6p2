@@ -79,7 +79,23 @@ void bst_insert(btNode*& bst_root, int insInt){
       return;
    }
 }
-bool bst_remove(btNode*& bst_root, int remInt);
-void bst_remove_max(btNode*& bst_root, int& data);
+bool bst_remove(btNode*& bst_root, int remInt){
+
+}
+void bst_remove_max(btNode*& bst_root, int& data){
+   /// Check to see if tree is empty. Don't do anything.
+   if(bst_root == 0){return;}
+
+   if(bst_root->right == 0){
+      // Tree has NO right child, largest item at root.
+      btNode* deleteNode = bst_root;
+      data = bst_root->data;
+      bst_root = bst_root->left;
+      delete deleteNode;
+   } else {
+      // Tree HAS right child, largest item NOT at root.
+      bst_remove_max(bst_root->right, data);
+   }
+}
 
 
