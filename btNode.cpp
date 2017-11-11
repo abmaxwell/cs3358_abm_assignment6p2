@@ -32,56 +32,91 @@ int bst_size(btNode* bst_root)
 
 void bst_insert(btNode*& bst_root, int insInt){
 
-   /// Create new node to insert.
-   btNode* newBtNode = new btNode;
-   newBtNode->data = insInt;
-   newBtNode->left,newBtNode->right = 0;
-
-   /// Check for empty tree.
    if(bst_root == 0){
-      bst_root = newBtNode;
+      /// Tree is empty. Root becomes new item.
+      btNode* new_root = new btNode;
+      new_root->data = insInt;
+      new_root->left = new_root->right = 0;
+      bst_root = new_root;
       return;
    }
 
+   // Create cursor to traverse tree.
    btNode* cursor = bst_root;
-   btNode* lastBtNode = 0;
 
    /// Check whether to insert LST or RST.
-   while(cursor != 0) {
-
-      // Current node is the last node presently.
-      lastBtNode = cursor;
-
-      // insInt matches value already in the tree. Overwrite value.
-      if(cursor->data == insInt){
-         cursor->data = insInt;
-         return;
-      }
+   while (cursor != 0) {
 
       if (cursor->data > insInt) {
-         // insInt is less than root node insert LST.
-         cursor = cursor->left;
+         /// Insert new node LST.
+         if(cursor->left == 0){
+            // Empty spot found.
+            cursor->left = new btNode;
+            cursor->left->data = insInt;
+            cursor->left->left = cursor->left->right = 0;
+            return;
+         } else {
+            // Keep searching.
+            cursor = cursor->left;
+         }
+      } else if(cursor->data < insInt){
+         /// Insert new node RST.
+         if(cursor->right == 0) {
+            // Empty spot found.
+            cursor->right = new btNode;
+            cursor->right->data = insInt;
+            cursor->right->left = cursor->right->right = 0;
+            return;
+         } else {
+            // Keep searching.
+            cursor = cursor->right;
+         }
       } else {
-         // insInt is greater than root node insert RST.
-         cursor = cursor->right;
+         /// Parent's data matches new item. No change.
+         return;
       }
    }
 
-   /// Last node in LST or RST found. Choose insertion path.
+}
 
-   if(lastBtNode->data > insInt){
-      // insInt is less than root node insert LST.
-      lastBtNode->left = newBtNode;
-      return;
+bool bst_remove(btNode*& bst_root, int remInt){
+   /// Check to see if tree is empty. Don't do anything.
+   if(bst_root == 0){return false;}
+
+   if(bst_root->data > remInt){
+      // Target int is less than root.
+      bst_remove(bst_root->left, remInt);
+
+   } else if(bst_root->data < remInt) {
+      // Target int is greater than root.
+      bst_remove(bst_root->right, remInt);
+
    } else {
-      // insInt is greater than root node insert RST.
-      lastBtNode->right = newBtNode;
-      return;
+      /// Target int is equal to root. Special conditions present.
+
+      if(bst_root->left != 0 && bst_root->right != 0){
+         /// Case where BOTH LST and RST children present.
+         bst_remove_max(bst_root->left, bst_root->data);
+      } else {
+         /// Cases where only LST or RST or non children present.
+         btNode* old_bst_root = bst_root;
+         if(bst_root->left == 0 && bst_root->right != 0){
+            // Has RST but no LST.
+            bst_root = bst_root->right;
+         } else if (bst_root-> left != 0 && bst_root->right == 0){
+            // Has LST but no RST.
+            bst_root = bst_root->left;
+         } else {
+            // No LST or RST children, parent only.
+            bst_root = 0;
+         }
+         // Free up old head.
+         delete old_bst_root;
+      }
+      return true;
    }
 }
-bool bst_remove(btNode*& bst_root, int remInt){
 
-}
 void bst_remove_max(btNode*& bst_root, int& data){
    /// Check to see if tree is empty. Don't do anything.
    if(bst_root == 0){return;}
